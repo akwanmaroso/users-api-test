@@ -87,15 +87,23 @@ func (m *MongoRepositoryImpl) Edit(ctx context.Context, user *models.User) (*mod
 		ReturnDocument: &after,
 	}
 
-	update := bson.D{
-		{"first_name", user.FirstName},
-		{"last_name", user.FirstName},
-		{"username", user.FirstName},
-		{"role", user.Role},
-		{"updated_at", user.UpdatedAt},
+	objID, err := primitive.ObjectIDFromHex(user.ID.Hex())
+	if err != nil {
+		return nil, err
 	}
 
-	err := m.db.FindOneAndUpdate(ctx, user.ID, update, &opts).Decode(&result)
+	filter := bson.M{"_id": objID}
+	update := bson.M{
+		"$set": bson.M{
+			"first_name": user.FirstName,
+			"last_name":  user.LastName,
+			"username":   user.Username,
+			"role":       user.Role,
+			"updated_at": user.UpdatedAt,
+		},
+	}
+
+	err = m.db.FindOneAndUpdate(ctx, filter, update, &opts).Decode(&result)
 	if err != nil {
 		return nil, err
 	}

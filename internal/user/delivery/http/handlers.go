@@ -22,14 +22,6 @@ func NewUserHandlers(cfg *config.Config, userUC user.UseCase, logger logger.Logg
 	return &userHandlersImpl{cfg: cfg, userUC: userUC, logger: logger}
 }
 
-// Create godoc
-// @Summary Create users
-// @Description Create users handler
-// @Tags Users
-// @Accept json
-// @Produce json
-// @Success 201 {object} models.User
-// @Router /users [post]
 func (h *userHandlersImpl) Create() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := utils.GetRequestCtx(c)
@@ -56,15 +48,7 @@ func (h *userHandlersImpl) Create() echo.HandlerFunc {
 	}
 }
 
-// Create godoc
-// @Summary Create users
-// @Description Create users handler
-// @Tags Users
-// @Accept json
-// @Produce json
-// @Success 201 {object} models.User
-// @Router /users [post]
-func (h *userHandlersImpl) Detail() echo.HandlerFunc {
+func (h *userHandlersImpl) Current() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		user, ok := c.Get("user").(*models.User)
 		if !ok {
@@ -83,14 +67,6 @@ func (h *userHandlersImpl) Detail() echo.HandlerFunc {
 	}
 }
 
-// Create godoc
-// @Summary Create users
-// @Description Create users handler
-// @Tags Users
-// @Accept json
-// @Produce json
-// @Success 201 {object} models.User
-// @Router /users [post]
 func (h *userHandlersImpl) List() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := utils.GetRequestCtx(c)
@@ -109,15 +85,6 @@ func (h *userHandlersImpl) List() echo.HandlerFunc {
 	}
 }
 
-// Update godoc
-// @Summary Update news
-// @Description Update news handler
-// @Tags News
-// @Accept json
-// @Produce json
-// @Param id path int true "news_id"
-// @Success 200 {object} models.News
-// @Router /news/{id} [put]
 func (h *userHandlersImpl) Update() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := utils.GetRequestCtx(c)
@@ -126,6 +93,7 @@ func (h *userHandlersImpl) Update() echo.HandlerFunc {
 		n := &models.User{}
 		err := c.Bind(n)
 		if err != nil {
+			h.logger.Error(err)
 			return c.JSON(http.StatusBadRequest, map[string]interface{}{
 				"code":  http.StatusBadRequest,
 				"error": err.Error(),
@@ -133,13 +101,6 @@ func (h *userHandlersImpl) Update() echo.HandlerFunc {
 		}
 
 		n.ID, err = primitive.ObjectIDFromHex(id)
-		if err := c.Bind(n); err != nil {
-			return c.JSON(http.StatusBadRequest, map[string]interface{}{
-				"code":  http.StatusBadRequest,
-				"error": err.Error(),
-			})
-		}
-
 		updatedNews, err := h.userUC.Update(ctx, n)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, map[string]interface{}{
@@ -152,15 +113,6 @@ func (h *userHandlersImpl) Update() echo.HandlerFunc {
 	}
 }
 
-// Delete godoc
-// @Summary Delete users
-// @Description Delete by id users handler
-// @Tags users
-// @Accept json
-// @Produce json
-// @Param id path int true "id"
-// @Success 200 {string} string	"ok"
-// @Router /users/{id} [delete]
 func (h *userHandlersImpl) Delete() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := utils.GetRequestCtx(c)

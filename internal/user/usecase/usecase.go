@@ -7,6 +7,7 @@ import (
 	"github.com/akwanmaroso/users-api/internal/models"
 	"github.com/akwanmaroso/users-api/internal/user"
 	"github.com/akwanmaroso/users-api/pkg/logger"
+	"github.com/akwanmaroso/users-api/pkg/utils"
 )
 
 type userUseCaseImpl struct {
@@ -49,6 +50,11 @@ func (u *userUseCaseImpl) Delete(ctx context.Context, id string) error {
 
 func (u *userUseCaseImpl) Update(ctx context.Context, user *models.User) (*models.User, error) {
 	user.PrepareUpdate()
+
+	if err := utils.ValidateIsOwner(ctx, user.ID.Hex(), u.logger); err != nil {
+		return nil, err
+	}
+
 	result, err := u.userRepo.Edit(ctx, user)
 	if err != nil {
 		return nil, err

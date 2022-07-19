@@ -9,6 +9,7 @@ import (
 func MapUserRoutes(userGroup *echo.Group, h user.Handlers, mw *middleware.MiddlewareManager) {
 	userGroup.POST("", h.Create())
 	userGroup.DELETE("/:id", h.Delete(), mw.AuthMiddleware, mw.RoleBasedAuthMiddleware([]string{"admin"}))
-	userGroup.GET("/current", h.Detail(), mw.AuthMiddleware)
+	userGroup.GET("/current", h.Current(), mw.AuthMiddleware)
 	userGroup.GET("", h.List(), mw.AuthMiddleware, mw.RoleBasedAuthMiddleware([]string{"admin"}))
+	userGroup.PUT("/:id", h.Update(), mw.AuthMiddleware)
 }
