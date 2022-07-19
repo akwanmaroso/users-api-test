@@ -1,27 +1,19 @@
-# Initial stage: download modules
-FROM golang:1.18-alpine as builder
+FROM golang:1.16-alpine as builder
 
-ENV config=docker
+RUN apk update && apk add --no-cache git
 
 WORKDIR /app
 
-COPY ./ /app
+COPY go.mod go.sum ./
 
 RUN go mod download
 
+COPY . .
 
-# Intermediate stage: Build the binary
-FROM golang:1.18-alpine as runner
+EXPOSE 5001
 
-COPY --from=builder ./app ./app
+RUN go build ./cmd/api/main.go
 
-RUN go get github.com/githubnemo/CompileDaemon
-
-WORKDIR /app
 ENV config=docker
 
-EXPOSE 5000
-EXPOSE 5555
-EXPOSE 7070
-
-ENTRYPOINT CompileDaemon --build="go build cmd/api/main.go" --command=./main
+CMD ["./main"]

@@ -1,3 +1,11 @@
 .idea
-.git
-.golangci.yml
+data
+keyfile
+
+Dockerfile
+Dockerfile.dev
+docker-compose.local.yml
+docker-compose.yml
+Makefile
+config/config-local.yaml
+README.md

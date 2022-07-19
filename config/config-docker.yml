@@ -20,7 +20,7 @@ logger:
   Level: info
 
 redis:
-  RedisAddr: localhost:6379
+  RedisAddr: redis:6379
   RedisPassword:
   RedisDb: 0
   RedisDefaultdb: 0
@@ -31,4 +31,4 @@ redis:
   DB: 0
 
 mongodb:
-  URI: mongodb://root:S3cret1234@localhost:27017
+  URI: mongodb://root:S3cret1234@mongo_db:27017
