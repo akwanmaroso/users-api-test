@@ -13,7 +13,9 @@ import (
 type Config struct {
 	Server  ServerConfig
 	MongoDB MongoDBConfig
-	Logger  Logger
+	JWT
+	Logger Logger
+	Redis  RedisConfig
 }
 
 type ServerConfig struct {
@@ -31,12 +33,29 @@ type ServerConfig struct {
 	Debug             bool
 }
 
+type JWT struct {
+	AccessSecret  string
+	RefreshSecret string
+}
+
 type Logger struct {
 	Development       bool
 	DisableCaller     bool
 	DisableStacktrace bool
 	Encoding          string
 	Level             string
+}
+
+type RedisConfig struct {
+	RedisAddr      string
+	RedisPassword  string
+	RedisDB        string
+	RedisDefaultdb string
+	MinIdleConns   int
+	PoolSize       int
+	PoolTimeout    int
+	Password       string
+	DB             int
 }
 
 type MongoDBConfig struct {

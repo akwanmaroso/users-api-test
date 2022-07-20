@@ -10,6 +10,7 @@ import (
 
 	"github.com/akwanmaroso/users-api/config"
 	"github.com/akwanmaroso/users-api/pkg/logger"
+	"github.com/go-redis/redis/v8"
 	"github.com/labstack/echo/v4"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -20,18 +21,20 @@ const (
 )
 
 type Server struct {
-	echo   *echo.Echo
-	cfg    *config.Config
-	db     *mongo.Client
-	logger logger.Logger
+	echo        *echo.Echo
+	cfg         *config.Config
+	db          *mongo.Client
+	redisClient *redis.Client
+	logger      logger.Logger
 }
 
-func NewServer(cfg *config.Config, db *mongo.Client, logger logger.Logger) *Server {
+func NewServer(cfg *config.Config, db *mongo.Client, redisClient *redis.Client, logger logger.Logger) *Server {
 	return &Server{
-		echo:   echo.New(),
-		cfg:    cfg,
-		db:     db,
-		logger: logger,
+		echo:        echo.New(),
+		cfg:         cfg,
+		db:          db,
+		redisClient: redisClient,
+		logger:      logger,
 	}
 }
 

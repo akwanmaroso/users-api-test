@@ -60,6 +60,7 @@ func (u *User) SanitizePassword() {
 }
 
 type UserWithToken struct {
-	User  *User  `json:"user"`
-	Token string `json:"token"`
+	User         *User  `json:"user"`
+	AccesssToken string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
 }

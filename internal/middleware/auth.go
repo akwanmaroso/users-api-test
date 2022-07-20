@@ -12,7 +12,7 @@ import (
 
 func (mw *MiddlewareManager) AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		claims, err := utils.ExtractJWTFromRequest(c, mw.cfg.Server.JwtSecretKey)
+		claims, err := utils.ExtractJWTFromRequest(c, mw.cfg.JWT.AccessSecret)
 		if err != nil {
 			mw.logger.Errorf("ExtractJWTFromRequest RequestID: %s,  Error: %s", utils.GetRequestID(c), err.Error())
 			return c.JSON(http.StatusUnauthorized, map[string]interface{}{

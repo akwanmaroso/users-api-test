@@ -7,7 +7,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/akwanmaroso/users-api/config"
 	"github.com/akwanmaroso/users-api/internal/models"
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
@@ -19,17 +18,17 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
-func GenerateJWTToken(user *models.User, config *config.Config) (string, error) {
+func GenerateJWTToken(user *models.User, secret string, exp time.Duration) (string, error) {
 	claims := &Claims{
 		Username: user.Username,
 		ID:       user.ID.Hex(),
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Minute * 60).Unix(),
+			ExpiresAt: time.Now().Add(exp).Unix(),
 		},
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString([]byte(config.Server.JwtSecretKey))
+	tokenString, err := token.SignedString([]byte(secret))
 	if err != nil {
 		return "", err
 	}
@@ -43,8 +42,12 @@ func ExtractJWTFromRequest(e echo.Context, key string) (*Claims, error) {
 		return nil, err
 	}
 
+	return ExtractUser(tokenString, key)
+}
+
+func ExtractUser(tokenStr string, key string) (*Claims, error) {
 	claims := jwt.MapClaims{}
-	token, err := jwt.ParseWithClaims(tokenString, claims, func(t *jwt.Token) (interface{}, error) {
+	token, err := jwt.ParseWithClaims(tokenStr, claims, func(t *jwt.Token) (interface{}, error) {
 		return []byte(key), nil
 	})
 

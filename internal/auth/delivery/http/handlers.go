@@ -54,3 +54,33 @@ func (h *authHandlersImpl) Login() echo.HandlerFunc {
 		})
 	}
 }
+
+func (h *authHandlersImpl) Refresh() echo.HandlerFunc {
+	type Refresh struct {
+		Token string `json:"token" validate:"required"`
+	}
+	return func(c echo.Context) error {
+		ctx := utils.GetRequestCtx(c)
+
+		refresh := &Refresh{}
+		if err := utils.ReadRequest(c, refresh); err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]interface{}{
+				"code":  http.StatusOK,
+				"error": err,
+			})
+		}
+
+		userWithToken, err := h.authUC.Refresh(ctx, refresh.Token)
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+				"code":  http.StatusInternalServerError,
+				"error": err,
+			})
+		}
+
+		return c.JSON(http.StatusCreated, map[string]interface{}{
+			"code": http.StatusOK,
+			"data": userWithToken,
+		})
+	}
+}

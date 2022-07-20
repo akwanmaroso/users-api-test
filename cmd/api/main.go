@@ -29,7 +29,6 @@ func main() {
 	appLogger.InitLogger()
 	appLogger.Infof("AppVersion: %s, LogLevel: %s, Mode: %s, SSL: %v", cfg.Server.AppVersion, cfg.Logger.Level, cfg.Server.Mode, cfg.Server.SSL)
 
-	log.Println("=>>>>", cfg.MongoDB)
 	mongoDB, err := db.NewMongoDBConnection(cfg)
 	if err != nil {
 		appLogger.Fatalf("MongoDB init: %s", err)
@@ -37,7 +36,10 @@ func main() {
 		appLogger.Infof("MongoDB connected, status: %#v")
 	}
 
-	s := server.NewServer(cfg, mongoDB, appLogger)
+	redisClient := db.NewRedisClient(cfg)
+	defer redisClient.Close()
+
+	s := server.NewServer(cfg, mongoDB, redisClient, appLogger)
 	if err := s.Run(); err != nil {
 		log.Fatal(err)
 	}

@@ -9,4 +9,5 @@ import (
 // Map auth routes
 func MapAuthRoutes(authGroup *echo.Group, h auth.Handlers, mw *middleware.MiddlewareManager) {
 	authGroup.POST("/login", h.Login())
+	authGroup.POST("/refresh", h.Refresh())
 }

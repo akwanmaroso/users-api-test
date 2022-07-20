@@ -3,8 +3,6 @@ server:
   Port: :5001
   PprofPort: :5555
   Mode: Development
-  JwtSecretKey: secretkey
-  CookieName: jwt-token
   ReadTimeout: 5
   WriteTimeout: 5
   SSL: true
@@ -29,6 +27,10 @@ redis:
   PoolTimeout: 240
   Password: ""
   DB: 0
+
+jwt: 
+  AccessSecret: supersecretaccesstoken
+  RefreshSecret: supersecretrefreshtoken
 
 mongodb:
   URI: mongodb://root:S3cret1234@localhost:27017
