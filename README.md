@@ -19,3 +19,11 @@
 ```
     make local
 ```
+
+### ARCH
+
+![arch](./docs/arch.png)
+
+### Minikube
+
+![arch](./docs/pods.png)
