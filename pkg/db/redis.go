@@ -1,13 +1,14 @@
 package db
 
 import (
+	"context"
 	"time"
 
 	"github.com/akwanmaroso/users-api/config"
 	"github.com/go-redis/redis/v8"
 )
 
-func NewRedisClient(cfg *config.Config) *redis.Client {
+func NewRedisClient(ctx context.Context, cfg *config.Config) (*redis.Client, error) {
 	redisHost := cfg.Redis.RedisAddr
 
 	if redisHost == "" {
@@ -23,5 +24,9 @@ func NewRedisClient(cfg *config.Config) *redis.Client {
 		DB:           cfg.Redis.DB,       // use default DB
 	})
 
-	return client
+	if err := client.Ping(ctx).Err(); err != nil {
+		return nil, err
+	}
+
+	return client, nil
 }

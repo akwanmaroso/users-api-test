@@ -17,7 +17,6 @@ RUN go mod download
 COPY . .
 
 # Build the application
-# go build -o [name] [path to file]
 RUN go build -o app cmd/api/main.go
 
 # Move to /dist directory as the place for resulting binary folder

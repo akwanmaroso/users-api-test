@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 
 	"github.com/akwanmaroso/users-api/internal/models"
@@ -21,9 +20,6 @@ func (mw *MiddlewareManager) AuthMiddleware(next echo.HandlerFunc) echo.HandlerF
 			})
 		}
 
-		fmt.Println(claims.ID)
-		// id,claims.ID
-		// fmt.Println(id)
 		user, err := mw.userRepo.GetByID(c.Request().Context(), claims.ID)
 		if err != nil {
 			mw.logger.Errorf("GetByID RequestID: %s, Error: %s", utils.GetRequestID(c), err.Error())
