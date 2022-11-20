@@ -1,29 +1,35 @@
 # Users API
 
-### How to run ?
+Simple RESTFul API for user-api using golang, mongodb, and redis.
 
-```
-    make run
-```
+## A. Demo
 
-### How to build ?
+### 1. Deploy App
 
-```
-    make build
+```shell
+    kubectl create -f k8s/
 ```
 
-## Docker Compose
+### 2. Get All Resource
 
-### local
-
-```
-    make local
+```shell
+    kubectl get all
 ```
 
-### ARCH
+![1](./docs/1.png)
 
-![arch](./docs/arch.png)
+### 3. Running App In Minikube
 
-### Minikube
+```shell
+    minikube service web
+```
 
-![arch](./docs/pods.png)
+![2](./docs/2.png)
+
+### 4. Testing In Postman
+
+![3](./docs/3.png)
+
+## B. Flow Application
+
+![arch](./docs/flow.png)
