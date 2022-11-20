@@ -1,0 +1,39 @@
+[{
+  "_id": {
+    "$oid": "6379ba6c7d803fdeaa440f04"
+  },
+  "username": "user1",
+  "first_name": "john",
+  "last_name": "doe",
+  "password": "$2a$10$sx3a2E0pN29dxHOuUqWEzuaKICzRvScX6qC2v8b2ub1mPnNa9dYGK",
+  "role": "user",
+  "created_at": {
+    "$date": {
+      "$numberLong": "1668921964782"
+    }
+  },
+  "updated_at": {
+    "$date": {
+      "$numberLong": "1668921964782"
+    }
+  }
+},{
+  "_id": {
+    "$oid": "6379ba817d803fdeaa440f05"
+  },
+  "username": "admin",
+  "first_name": "john",
+  "last_name": "does",
+  "password": "$2a$10$sm3pm1HYWn7AnPUy59F9J.YMVL6FAhGN79RITFXzp.sdiMFOVSSbC",
+  "role": "admin",
+  "created_at": {
+    "$date": {
+      "$numberLong": "1668921985211"
+    }
+  },
+  "updated_at": {
+    "$date": {
+      "$numberLong": "1668921985211"
+    }
+  }
+}]

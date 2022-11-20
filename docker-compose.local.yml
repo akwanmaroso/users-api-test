@@ -39,7 +39,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: S3cret1234
     networks:
       - networkapi
-
+  
 volumes:
   mongodbdata:
 
